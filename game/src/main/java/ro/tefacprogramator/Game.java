@@ -37,6 +37,7 @@ public class Game
         CityMap cityMap = new CityMap();
         cityMap.setMapX(q.ReadRowFromFile());
         cityMap.setMapY(q.ReadColumnFromFile());
+        q.ReadOtherLineFromFile();
     }
 
     public static int getRandomNumber(int min, int max) {
