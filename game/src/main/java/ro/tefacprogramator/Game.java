@@ -1,6 +1,9 @@
 package ro.tefacprogramator;
 
-
+/**
+ * Hello world!
+ *
+ */
 public class Game 
 {
     public static void main( String[] args )
