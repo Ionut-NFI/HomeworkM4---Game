@@ -28,4 +28,5 @@ public class CityMap {
     public void setMap(int[][] map) {
         this.map = map;
     }
+
 }

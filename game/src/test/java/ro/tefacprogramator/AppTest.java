@@ -1,24 +1,16 @@
 package ro.tefacprogramator;
 
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- * Unit test for simple App.
- */
+
 public class AppTest 
 {
-    
-        Character c = new Character();
-    
     @Test
     public void shouldSetCharacterMapPositionX()
     {
-        
+        Character c = new Character();
         c.setMapPositionX(10);
         Assert.assertEquals( 10 , c.getMapPositionX() );
     }
@@ -26,7 +18,7 @@ public class AppTest
     @Test
     public void shouldSetCharacterMapPositionY()
     {
-        
+        Character c = new Character();
         c.setMapPositionY(5);
         Assert.assertEquals( 5 , c.getMapPositionY() );
     }
