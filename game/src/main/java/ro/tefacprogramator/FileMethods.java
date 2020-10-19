@@ -59,5 +59,47 @@ public class FileMethods {
     return data;
   }
   
+  public char[][] makeMatrix2D(char[] matrix1D, CityMap cityMap) {
+    char [][] tempMap = new char[cityMap.getMapX()][cityMap.getMapY()];
+    int count = 0;
+    for(int i = 0; i < cityMap.getMapX();i++){
+    for(int j = 0; j< cityMap.getMapY();j++){
+        tempMap[i][j] = matrix1D[count];
+        count++;
+    }
+    }
+  return tempMap;
+  }
+
+ public int[] RPosition(char[] matrix1D, CityMap cityMap){
+  int[] position = new int[2];
+  char[][]tempMatrix = makeMatrix2D(matrix1D,cityMap);
+  
+  for(int i = 0; i<cityMap.getMapX(); i++){
+    for(int j = 0; j<cityMap.getMapY(); j++){
+      if( tempMatrix[i][j] == 'R'){
+        position[0] = i;
+        position[1] = j;
+      }
+    }
+  }
+  return position;
+ }
+
+ public int[] JPosition(char[] matrix1D, CityMap cityMap){
+  int[] position = new int[2];
+  char[][]tempMatrix = makeMatrix2D(matrix1D,cityMap);
+  
+  for(int i = 0; i<cityMap.getMapX(); i++){
+    for(int j = 0; j<cityMap.getMapY(); j++){
+      if( tempMatrix[i][j] == 'J'){
+        position[0] = i;
+        position[1] = j;
+      }
+    }
+  }
+  return position;
+ }
+ 
 
 }
