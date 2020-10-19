@@ -1,24 +1,44 @@
 package ro.tefacprogramator;
-import java.io.File;  // Import the File class
-import java.io.FileNotFoundException;  // Import this class to handle errors
-import java.util.Scanner; // Import the Scanner class to read text files
+import java.io.File;  
+import java.io.FileNotFoundException;  
+import java.util.Scanner; 
 
 public class FileMethods {
 
-  public void ReadRowFromFile() {
+  public String ReadFirstLineFromFile() {
     
-      try {
-        File myObj = new File("maze.in");
-        Scanner myReader = new Scanner(myObj);
-        while (myReader.hasNextLine()) {
-          String data = myReader.nextLine();
-          System.out.println(data);
-        }
-        myReader.close();
-      } catch (FileNotFoundException e) {
-        System.out.println("An error occurred.");
-        e.printStackTrace();
-      }
+    String data = "";
+  
+    try {
+      File myObj = new File("maze.in");
+      Scanner myReader = new Scanner(myObj);
+      
+      data = myReader.nextLine();
+      myReader.close();
+    } 
+    catch (FileNotFoundException e) {
+      System.out.println("An error occurred.");
+      e.printStackTrace();
     }
+    
+    return data;
+  }
+
+  public int ReadRowFromFile(){
+    String line = ReadFirstLineFromFile();
+    
+    int index = line.indexOf(" ");
+
+    return Integer.parseInt ( line.substring(0, line.indexOf(" ")));
+  }
+
+  public int ReadColumnFromFile(){
+    String line = ReadFirstLineFromFile();
+    int index = line.indexOf(" ");
+    
+    return Integer.parseInt ( line.substring(line.indexOf(" ")+1, line.length()));
+  }
+
+
   }
 

@@ -22,4 +22,6 @@ public class AppTest
         c.setMapPositionY(5);
         Assert.assertEquals( 5 , c.getMapPositionY() );
     }
+
+    
 }
