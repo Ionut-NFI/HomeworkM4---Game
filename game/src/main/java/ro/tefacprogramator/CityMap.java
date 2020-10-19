@@ -3,7 +3,7 @@ package ro.tefacprogramator;
 public class CityMap {
     private int mapX;
     private int mapY;
-    private int [][] map = new int[mapX][mapY];
+    private char [][] map = new char[mapX][mapY];
 
     public int getMapX() {
         return mapX;
@@ -21,12 +21,12 @@ public class CityMap {
         this.mapY = mapY;
     }
 
-    public int[][] getMap() {
+    public char[][] getMap() {
         return map;
     }
 
-    public void setMap(int[][] map) {
-        this.map = map;
+    public void setMap(char[][] matrix2d) {
+        this.map = matrix2d;
     }
 
 }

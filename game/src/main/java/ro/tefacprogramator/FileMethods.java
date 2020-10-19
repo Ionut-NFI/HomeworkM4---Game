@@ -56,7 +56,6 @@ public class FileMethods {
       e.printStackTrace();
     }
     
-    System.out.print(data);
     return data;
   }
   

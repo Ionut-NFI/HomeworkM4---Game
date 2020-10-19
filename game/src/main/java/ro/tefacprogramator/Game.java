@@ -37,10 +37,33 @@ public class Game
         CityMap cityMap = new CityMap();
         cityMap.setMapX(q.ReadRowFromFile());
         cityMap.setMapY(q.ReadColumnFromFile());
-        q.ReadOtherLineFromFile();
+        char[] matrix1D = q.ReadOtherLineFromFile().toCharArray();
+        char[][] matrix2D = makeMatrix2D(matrix1D, cityMap);
+        cityMap.setMap(matrix2D);
+
+        // print matrix 2D
+        
+        for (int i = 0; i < cityMap.getMapX(); i++) {
+            for (int j = 0; j < cityMap.getMapY(); j++) {
+                System.out.print(cityMap.getMap()[i][j]);
+            }
+            System.out.println();
+        }
     }
 
     public static int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
+    }
+
+    public static char[][] makeMatrix2D(char[] matrix1D, CityMap cityMap) {
+        char [][] tempMap = new char[cityMap.getMapX()][cityMap.getMapY()];
+    int count = 0;
+    for(int i = 0; i < cityMap.getMapX();i++){
+        for(int j = 0; j< cityMap.getMapY();j++){
+            tempMap[i][j] = matrix1D[count];
+            count++;
+        }
+    }
+    return tempMap;
     }
 }
