@@ -2,6 +2,9 @@ package ro.tefacprogramator;
 
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 /**
@@ -9,12 +12,22 @@ import org.junit.Test;
  */
 public class AppTest 
 {
-    /**
-     * Rigorous Test :-)
-     */
+    
+        Character c = new Character();
+    
     @Test
-    public void shouldAnswerWithTrue()
+    public void shouldSetCharacterMapPositionX()
     {
-        assertTrue( true );
+        
+        c.setMapPositionX(10);
+        Assert.assertEquals( 10 , c.getMapPositionX() );
+    }
+
+    @Test
+    public void shouldSetCharacterMapPositionY()
+    {
+        
+        c.setMapPositionY(5);
+        Assert.assertEquals( 5 , c.getMapPositionY() );
     }
 }

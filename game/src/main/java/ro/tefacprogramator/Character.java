@@ -2,11 +2,9 @@ package ro.tefacprogramator;
 
 public class Character {
     private String name;
-    private int[] mapPosition;
-
-    /**
-     * @return the name
-     */
+    private int mapPositionX;
+    private int mapPositionY;
+ 
     public String getName() {
         return name;
     }
@@ -15,11 +13,20 @@ public class Character {
         this.name = name;
     }
 
-    public int[] getMapPosition() {
-        return mapPosition;
+    public int getMapPositionX() {
+        return mapPositionX;
     }
 
-    public void setMapPosition(int[] mapPosition) {
-        this.mapPosition = mapPosition;
+    public void setMapPositionX(int mapPositionX) {
+        this.mapPositionX = mapPositionX;
     }
+
+    public int getMapPositionY() {
+        return mapPositionY;
+    }
+
+    public void setMapPositionY(int mapPositionY) {
+        this.mapPositionY = mapPositionY;
+    }
+
 }
