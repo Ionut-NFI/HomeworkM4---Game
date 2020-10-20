@@ -42,8 +42,50 @@ public class Game
             }
             System.out.println();
         }
+        Logic(ch2, ch2, q, cityMap);
     }
 
+    public static void Logic(Character ch1, Character ch2, FileMethods q, CityMap map) {
+        System.out.println("Logic function");
+        System.out.println();
 
-    
+        boolean[][] visitedMap = new boolean[q.ReadRowFromFile()][q.ReadColumnFromFile()];
+
+        int dist = 0;
+
+
+        for (int i = 0; i < map.getMapX(); i++) {
+            for (int j = 0; j < map.getMapY(); j++) {
+                System.out.print(visitedMap[i][j] + " ");
+            }
+            System.out.println();
+        }
+        
+        boolean answer = isSafe(map, visitedMap, 2, 2);
+        System.out.println(answer);
+
+        answer = isValid(5, 2, map);
+        System.out.println(answer);
+
+        int min_dist = fiindMinDistance(map, visitedMap, ch2, ch2, Integer.MAX_VALUE, 0);
+
+        if(min_dist != Integer.MAX_VALUE){
+            System.out.println("The shortest distance is "+min_dist);
+        }
+    }
+
+    public static boolean isSafe(CityMap map, boolean visitedMap[][], int x, int y) {
+
+        return !(map.getMap()[x][y] == '#' || visitedMap[x][y] == true);
+    }
+
+    public static boolean isValid(int x, int y, CityMap map){
+        return (x < map.getMapX() && y <map.getMapY() && x >=0 && y>=0);
+    }
+
+    public static int fiindMinDistance(CityMap map,boolean visitedMap[][], Character ch1, Character ch2, int min_dist,int dist){
+        
+        
+        return min_dist;
+    }
 }
