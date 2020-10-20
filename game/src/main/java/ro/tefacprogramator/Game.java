@@ -1,5 +1,7 @@
 package ro.tefacprogramator;
 
+import java.util.Stack;
+
 public class Game 
 {
     public static void main( String[] args )
@@ -50,11 +52,11 @@ public class Game
         System.out.println();
 
         boolean[][] visitedMap = new boolean[q.ReadRowFromFile()][q.ReadColumnFromFile()];
-
+        Stack myStack =new Stack();
         
         int[][] distanceMatrix = new int[q.ReadRowFromFile()][q.ReadColumnFromFile()];
 
-        int min_dist1 = fiindMinDistance(map, visitedMap, ch1.getMapPositionX(), ch1.getMapPositionY(), ch2.getMapPositionX(), ch2.getMapPositionY(), Integer.MAX_VALUE, 0, distanceMatrix);
+        int min_dist1 = fiindMinDistance(map, visitedMap, ch1.getMapPositionX(), ch1.getMapPositionY(), ch2.getMapPositionX(), ch2.getMapPositionY(), Integer.MAX_VALUE, 0, distanceMatrix, myStack);
         
         if(min_dist1%2 != 0){
            min_dist1++;
@@ -80,6 +82,9 @@ public class Game
             }
         
         }
+        System.out.println("--------");
+            System.out.println(myStack);
+        
        
     }
     
@@ -93,12 +98,31 @@ public class Game
         return (x < map.getMapX() && y <map.getMapY() && x >=0 && y>=0);
     }
 
-    public static int fiindMinDistance(CityMap map,boolean visitedMap[][], int ch1X, int ch1Y, int ch2X, int ch2Y, int min_dist,int dist, int distanceMatrix[][]){
+    public static int fiindMinDistance(CityMap map,boolean visitedMap[][], int ch1X, int ch1Y, int ch2X, int ch2Y, int min_dist,int dist, int distanceMatrix[][],Stack myStack){
         
         
         distanceMatrix[ch1X][ch1Y] = dist;
+        System.out.println("-->  " + distanceMatrix[ch1X][ch1Y]);
+      
+      
+        if(myStack.isEmpty() || myStack.size()==1 ){
+            myStack.push(String.valueOf(ch1X) + " " + String.valueOf(ch1Y));
+        }
+        else{
+            if((myStack.elementAt(myStack.size()-1) != (String.valueOf(ch1X) + " " + String.valueOf(ch1Y)))){
+                myStack.push(String.valueOf(ch1X) + " " + String.valueOf(ch1Y));
+            }
+            else{
+             myStack.pop();
+        }
+    }
+        System.out.println("last element " + myStack.elementAt(myStack.size()-1));
         
         if( ch1X == ch2X && ch1Y == ch2Y){
+            if(!myStack.contains(String.valueOf(ch1X) + " " + String.valueOf(ch1Y))){
+                myStack.push(String.valueOf(ch1X) + " " + String.valueOf(ch1Y));
+            }
+            
             return Integer.min(dist, min_dist); //if source == destination 
         }
 
@@ -106,24 +130,26 @@ public class Game
 
         //go to bottom cell
         if(isValid(ch1X+1,ch1Y,map) && isSafe(map, visitedMap, ch1X+1, ch1Y)){
-            min_dist = fiindMinDistance(map, visitedMap, ch1X+1, ch1Y, ch2X, ch2Y, min_dist, dist+1,distanceMatrix);
+            min_dist = fiindMinDistance(map, visitedMap, ch1X+1, ch1Y, ch2X, ch2Y, min_dist, dist+1, distanceMatrix, myStack);
         }
         
         //go to right cell
         if(isValid(ch1X,ch1Y+1,map) && isSafe(map, visitedMap, ch1X, ch1Y+1)){
-            min_dist = fiindMinDistance(map, visitedMap, ch1X, ch1Y+1, ch2X, ch2Y, min_dist, dist+1,distanceMatrix);
+            min_dist = fiindMinDistance(map, visitedMap, ch1X, ch1Y+1, ch2X, ch2Y, min_dist, dist+1, distanceMatrix, myStack);
         }
        
         // go to left cell
         if(isValid(ch1X,ch1Y-1,map) && isSafe(map, visitedMap,ch1X,ch1Y-1)){
-            min_dist = fiindMinDistance(map, visitedMap, ch1X, ch1Y-1, ch2X, ch2Y, min_dist, dist+1,distanceMatrix);
+            min_dist = fiindMinDistance(map, visitedMap, ch1X, ch1Y-1, ch2X, ch2Y, min_dist, dist+1, distanceMatrix, myStack);
         }
         
         //go to top cell
         if(isValid(ch1X-1, ch1Y, map) && isSafe(map, visitedMap,ch1X-1,ch1Y)){
-            min_dist = fiindMinDistance(map, visitedMap, ch1X-1, ch1Y, ch2X, ch2Y, min_dist, dist+1,distanceMatrix);
+            min_dist = fiindMinDistance(map, visitedMap, ch1X-1, ch1Y, ch2X, ch2Y, min_dist, dist+1, distanceMatrix, myStack);
             }
-            
+
+        
+
         visitedMap[ch1X][ch1Y] = false;
 
         return min_dist;
