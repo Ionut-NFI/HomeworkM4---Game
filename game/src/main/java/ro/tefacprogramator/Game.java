@@ -118,7 +118,8 @@ public class Game
             System.out.println("--------Y");
             System.out.println(yStack);
             
-           
+            System.out.println(v.size());
+            System.out.println("Location-> " +v.get(v.size()/2)  + " , "+ w.get(w.size()/2));
 }
     
 
