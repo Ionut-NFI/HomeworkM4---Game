@@ -86,6 +86,7 @@ public class Game
             if(distanceMatrix[(int) (v.get(i)) ][(int) (w.get(i))] == distanceMatrix[(int) (v.get(i+1)) ][(int) (w.get(i+1))]){
                 v.remove(i);
                 w.remove(i);
+                
             }
         }
             System.out.println("first pass  " +v);
@@ -94,6 +95,7 @@ public class Game
                 if(distanceMatrix[(int) (v.get(i)) ][(int) (w.get(i))] > distanceMatrix[(int) (v.get(i+1)) ][(int) (w.get(i+1))]){
                     v.remove(i);
                     w.remove(i);
+                    
                 }
             }
             System.out.println("second pass " +v);
@@ -102,6 +104,7 @@ public class Game
             if(distanceMatrix[(int) (v.get(i)) ][(int) (w.get(i))] == distanceMatrix[(int) (v.get(i-1)) ][(int) (w.get(i-1))]){
                 v.remove(i-1);
                 w.remove(i-1);
+                
             }
         }
        
@@ -140,7 +143,7 @@ public class Game
       
         xStack.push(ch1X);
         yStack.push(ch1Y);
-        
+         //  cat timp distanta < distanta precedenta -> delete  iar daca sunt == precedenta devine curenta + delete precedenta
         
 
         if( ch1X == ch2X && ch1Y == ch2Y){
@@ -171,7 +174,7 @@ public class Game
             min_dist = fiindMinDistance(map, visitedMap, ch1X, ch1Y-1, ch2X, ch2Y, min_dist, dist+1, distanceMatrix, xStack, yStack);
         }
         
-        //visitedMap[ch1X][ch1Y] = false;
+       // visitedMap[ch1X][ch1Y] = false;
 
         return min_dist;
     }
