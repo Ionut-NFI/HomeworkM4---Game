@@ -63,58 +63,62 @@ public class Game
         
         if(min_dist != Integer.MAX_VALUE){
             System.out.println("The shortest distance is "+min_dist );
+
+            for (int i = 0; i < q.ReadRowFromFile(); i++) {
+                for (int j = 0; j < q.ReadColumnFromFile(); j++) {
+                    System.out.print(distanceMatrix[i][j] + " ");
+                }
+                System.out.println();
+            }
+    
+            if(Integer.parseInt(xStack.get(xStack.size()-1).toString())>0)
+            {while( Integer.parseInt(xStack.get(xStack.size()-1).toString()) != ch2.getMapPositionX() && Integer.parseInt(xStack.get(xStack.size()-1).toString()) != ch2.getMapPositionX()){
+                xStack.pop();
+                yStack.pop();
+            }}
+      
+        ArrayList v = new ArrayList(xStack);
+        ArrayList w = new ArrayList(yStack);
+    
+        xStack.clear();
+        yStack.clear();
+        
+            System.out.println("before      " +v);
+            System.out.println("before      " +w);
+    
+            xStack.push(Integer.parseInt(v.get(v.size()-1).toString()));
+            yStack.push(Integer.parseInt(w.get(w.size()-1).toString()));
+            for(int i = v.size()-2; i>0 ; i--){
+                int x = Integer.parseInt(v.get(i).toString());
+                int y = Integer.parseInt(w.get(i).toString());
+                int l = Integer.parseInt(xStack.lastElement().toString());
+                int k = Integer.parseInt(yStack.lastElement().toString());
+    
+            if( distanceMatrix[x][y] == distanceMatrix[l][k]-1 ){
+     
+                xStack.push(Integer.parseInt(v.get(i).toString()));
+                yStack.push(Integer.parseInt(w.get(i).toString()));
+            }
+            
+            
+        }
+            xStack.push(Integer.parseInt(v.get(0).toString()));
+            yStack.push(Integer.parseInt(w.get(0).toString()));
+            
+            
+               
+                System.out.println(xStack);
+    
+                System.out.println(yStack);
+                int a= Integer.parseInt(xStack.get(xStack.size()/2).toString())+1 ;
+                int b = Integer.parseInt(yStack.get(yStack.size()/2).toString())+1;
+                System.out.println("Location-> " +a + " , "+ b);
+        }
+        else{
+            System.out.println("Destination can't be reached from source");
         }
       
-        for (int i = 0; i < q.ReadRowFromFile(); i++) {
-            for (int j = 0; j < q.ReadColumnFromFile(); j++) {
-                System.out.print(distanceMatrix[i][j] + " ");
-            }
-            System.out.println();
-        }
-
-         
-        
-  
-    ArrayList v = new ArrayList(xStack);
-    ArrayList w = new ArrayList(yStack);
-
-    xStack.clear();
-    yStack.clear();
-    
-        System.out.println("before      " +v);
-        System.out.println("before      " +w);
-
-        xStack.push(Integer.parseInt(v.get(v.size()-1).toString()));
-        yStack.push(Integer.parseInt(w.get(w.size()-1).toString()));
-        for(int i = v.size()-2; i>0 ; i--){
-            int x = Integer.parseInt(v.get(i).toString());
-            int y = Integer.parseInt(w.get(i).toString());
-            int l = Integer.parseInt(xStack.lastElement().toString());
-            int k = Integer.parseInt(yStack.lastElement().toString());
-
-        if( distanceMatrix[x][y] == distanceMatrix[l][k]-1 ){
- 
-            xStack.push(Integer.parseInt(v.get(i).toString()));
-            yStack.push(Integer.parseInt(w.get(i).toString()));
-        }
-        
-        
     }
-    xStack.push(Integer.parseInt(v.get(0).toString()));
-    yStack.push(Integer.parseInt(w.get(0).toString()));
-        
-        
-           
-            System.out.println(xStack);
-
-            System.out.println(yStack);
-            int a= Integer.parseInt(xStack.get(xStack.size()/2).toString())+1 ;
-            int b = Integer.parseInt(yStack.get(yStack.size()/2).toString())+1;
-            System.out.println("Location-> " +a + " , "+ b);
-            
-}
-
-
     public static boolean isSafe(CityMap map, boolean visitedMap[][], int x, int y) {
 
         return !(map.getMap()[x][y] == '#' || visitedMap[x][y] == true );
@@ -129,9 +133,12 @@ public class Game
  
         distanceMatrix[ch1X][ch1Y] = dist;
       
+        
         xStack.push(ch1X);
         yStack.push(ch1Y);
-
+    
+        
+        
         
 
         if( ch1X == ch2X && ch1Y == ch2Y){
