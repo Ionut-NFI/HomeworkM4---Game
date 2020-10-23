@@ -1,7 +1,6 @@
 package ro.tefacprogramator;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class Game 
@@ -73,58 +72,48 @@ public class Game
             System.out.println();
         }
 
+         
         
-        
-          
-            
-  System.out.println(xStack.size());
-  ArrayList v = new ArrayList(xStack);
-        ArrayList w = new ArrayList(yStack);
+  
+    ArrayList v = new ArrayList(xStack);
+    ArrayList w = new ArrayList(yStack);
+
+    xStack.clear();
+    yStack.clear();
+    
         System.out.println("before      " +v);
         System.out.println("before      " +w);
-        for(int i = 0; i<v.size()-1; i++ ){
-            if(distanceMatrix[(int) (v.get(i)) ][(int) (w.get(i))] == distanceMatrix[(int) (v.get(i+1)) ][(int) (w.get(i+1))]){
-                v.remove(i);
-                w.remove(i);
-                
-            }
-        }
-            System.out.println("first pass  " +v);
-            System.out.println("first pass  " +w);
-            for( int i = 0; i<v.size()-1; i++ ){
-                if(distanceMatrix[(int) (v.get(i)) ][(int) (w.get(i))] > distanceMatrix[(int) (v.get(i+1)) ][(int) (w.get(i+1))]){
-                    v.remove(i);
-                    w.remove(i);
-                    
-                }
-            }
-            System.out.println("second pass " +v);
-            System.out.println("second pass " +w);
-            for( int i = 1; i<v.size(); i++ ){
-            if(distanceMatrix[(int) (v.get(i)) ][(int) (w.get(i))] == distanceMatrix[(int) (v.get(i-1)) ][(int) (w.get(i-1))]){
-                v.remove(i-1);
-                w.remove(i-1);
-                
-            }
-        }
-       
-         
 
+        xStack.push(Integer.parseInt(v.get(v.size()-1).toString()));
+        yStack.push(Integer.parseInt(w.get(w.size()-1).toString()));
+        for(int i = v.size()-2; i>0 ; i--){
+            int x = Integer.parseInt(v.get(i).toString());
+            int y = Integer.parseInt(w.get(i).toString());
+            int l = Integer.parseInt(xStack.lastElement().toString());
+            int k = Integer.parseInt(yStack.lastElement().toString());
+
+        if( distanceMatrix[x][y] == distanceMatrix[l][k]-1 ){
+ 
+            xStack.push(Integer.parseInt(v.get(i).toString()));
+            yStack.push(Integer.parseInt(w.get(i).toString()));
+        }
         
         
-        System.out.println("after       " + v);
-        System.out.println("after       " +w);
+    }
+    xStack.push(Integer.parseInt(v.get(0).toString()));
+    yStack.push(Integer.parseInt(w.get(0).toString()));
+        
+        
            
-            System.out.println("--------X");
             System.out.println(xStack);
 
-            System.out.println("--------Y");
             System.out.println(yStack);
+            int a= Integer.parseInt(xStack.get(xStack.size()/2).toString())+1 ;
+            int b = Integer.parseInt(yStack.get(yStack.size()/2).toString())+1;
+            System.out.println("Location-> " +a + " , "+ b);
             
-            System.out.println(v.size());
-            System.out.println("Location-> " +v.get(v.size()/2)  + " , "+ w.get(w.size()/2));
 }
-    
+
 
     public static boolean isSafe(CityMap map, boolean visitedMap[][], int x, int y) {
 
@@ -137,13 +126,12 @@ public class Game
 
     public static int fiindMinDistance(CityMap map,boolean visitedMap[][], int ch1X, int ch1Y, int ch2X, int ch2Y, int min_dist,int dist, int distanceMatrix[][],Stack xStack, Stack yStack){
         
-        
+ 
         distanceMatrix[ch1X][ch1Y] = dist;
-        System.out.println("-->  " + distanceMatrix[ch1X][ch1Y] + " i-> " + ch1X + " j-> " + ch1Y);
       
         xStack.push(ch1X);
         yStack.push(ch1Y);
-         //  cat timp distanta < distanta precedenta -> delete  iar daca sunt == precedenta devine curenta + delete precedenta
+
         
 
         if( ch1X == ch2X && ch1Y == ch2Y){
@@ -154,10 +142,7 @@ public class Game
        
 
 
-        //go to top cell
-        if(isValid(ch1X-1, ch1Y, map) && isSafe(map, visitedMap,ch1X-1,ch1Y)){
-        min_dist = fiindMinDistance(map, visitedMap, ch1X-1, ch1Y, ch2X, ch2Y, min_dist, dist+1, distanceMatrix, xStack, yStack);
-        }
+        
 
         //go to bottom cell
         if(isValid(ch1X+1,ch1Y,map) && isSafe(map, visitedMap, ch1X+1, ch1Y)){
@@ -168,14 +153,17 @@ public class Game
         if(isValid(ch1X,ch1Y+1,map) && isSafe(map, visitedMap, ch1X, ch1Y+1)){
             min_dist = fiindMinDistance(map, visitedMap, ch1X, ch1Y+1, ch2X, ch2Y, min_dist, dist+1, distanceMatrix, xStack, yStack);
         }
-       
+       //go to top cell
+       if(isValid(ch1X-1, ch1Y, map) && isSafe(map, visitedMap,ch1X-1,ch1Y)){
+        min_dist = fiindMinDistance(map, visitedMap, ch1X-1, ch1Y, ch2X, ch2Y, min_dist, dist+1, distanceMatrix, xStack, yStack);
+        }
         // go to left cell
         if(isValid(ch1X,ch1Y-1,map) && isSafe(map, visitedMap,ch1X,ch1Y-1)){
             min_dist = fiindMinDistance(map, visitedMap, ch1X, ch1Y-1, ch2X, ch2Y, min_dist, dist+1, distanceMatrix, xStack, yStack);
         }
         
-       // visitedMap[ch1X][ch1Y] = false;
-
+       //visitedMap[ch1X][ch1Y] = false;
+    
         return min_dist;
     }
 }
