@@ -40,29 +40,19 @@ public class Game
         boolean[][] visitedMap = new boolean[q.ReadRowFromFile(inputFile)][q.ReadColumnFromFile(inputFile)];
         Stack xStack = new Stack();
         Stack yStack = new Stack();
-        
         int[][] distanceMatrix = new int[q.ReadRowFromFile(inputFile)][q.ReadColumnFromFile(inputFile)];
-
         int min_dist = fiindMinDistance(map, visitedMap, ch1.getMapPositionX(), ch1.getMapPositionY(), ch2.getMapPositionX(), ch2.getMapPositionY(), Integer.MAX_VALUE, 0, distanceMatrix, xStack, yStack);
         
-        
-        if(min_dist != Integer.MAX_VALUE){  
+        if(min_dist != Integer.MAX_VALUE){
 
-            for (int i = 0; i < q.ReadRowFromFile(inputFile); i++) {
-                for (int j = 0; j < q.ReadColumnFromFile(inputFile); j++) {
-                    System.out.print(distanceMatrix[i][j] + " ");
-                }
-                System.out.println();
-            }
-            System.out.println("R-> " +ch1.getMapPositionX() + " " + ch1.getMapPositionY());
-            System.out.println("J-> " +ch2.getMapPositionX() + " " + ch2.getMapPositionY());
-
+            System.out.println(xStack + "\n" + yStack);
+            //Se verifica daca exista o solutie sau mai multe
         int count = 0;
         for(int i =0; i< xStack.size();i++){
             if((Integer.parseInt(xStack.get(i).toString()) == ch2.getMapPositionX()) && (Integer.parseInt(yStack.get(i).toString()) == ch2.getMapPositionY()))
             count ++; 
         }
-        if(count >=2){
+        if(count >=2){  //Daca exista mai multe solutii -> se alege prima varianta si distanta finala = distanta de la ultimul punct din solutie.
             for(int i =1; i< xStack.size()-1;i++){
                 if((Integer.parseInt(xStack.get(i).toString()) == ch2.getMapPositionX()) && (Integer.parseInt(yStack.get(i).toString()) == ch2.getMapPositionY())){
                     xStack.setSize(i+1);
@@ -71,29 +61,26 @@ public class Game
                 }
             }
         }
-        System.out.println(xStack);
-        System.out.println(yStack);
-        for (int i = 0; i < q.ReadRowFromFile(inputFile); i++) {
-            for (int j = 0; j < q.ReadColumnFromFile(inputFile); j++) {
-                System.out.print(distanceMatrix[i][j] + " ");
-            }
-            System.out.println();
-        }
+
+        //Cateva scenarii unde in stiva coordonatele destinatiei nu erau ultimile valori -> se verifica si se sterg valorile daca nu sunt coordonatele destinatiei
         while(Integer.parseInt(xStack.get(xStack.size()-1).toString()) != ch2.getMapPositionX() || Integer.parseInt(yStack.get(yStack.size()-1).toString()) != ch2.getMapPositionY())
         {
         xStack.pop();
         yStack.pop();
         }
       
+        //Creeza 2 ArrayList in care stochez datele din stive.
         ArrayList v = new ArrayList(xStack);
         ArrayList w = new ArrayList(yStack);
-
+        System.out.println(xStack + "\n" + yStack);
+        //Goleste stivele.
         xStack.clear();
         yStack.clear();
-           
+        
+        //Adauga coordonatele punctului de plecare
         xStack.push(Integer.parseInt(v.get(v.size()-1).toString()));
         yStack.push(Integer.parseInt(w.get(w.size()-1).toString()));
-
+        //Verifica daca valoarea distantei precedente din stiva finala este egala cu valoarea distantei actuale din lista.
         for(int i = v.size()-1; i>0 ; i--){
             int x = Integer.parseInt(v.get(i).toString());
             int y = Integer.parseInt(w.get(i).toString());
@@ -101,21 +88,18 @@ public class Game
             int k = Integer.parseInt(yStack.lastElement().toString());
 
             if( distanceMatrix[x][y] == distanceMatrix[l][k]-1 ){
-        
                 xStack.push(Integer.parseInt(v.get(i).toString()));
                 yStack.push(Integer.parseInt(w.get(i).toString()));
             }
         }
-            xStack.push(Integer.parseInt(v.get(0).toString()));
-            yStack.push(Integer.parseInt(w.get(0).toString()));
-            
-        System.out.println(xStack); 
-        System.out.println(yStack);
-
+        //Adacuga coordonatele punctului de sosire.
+        xStack.push(Integer.parseInt(v.get(0).toString()));
+        yStack.push(Integer.parseInt(w.get(0).toString()));
+        System.out.println(xStack + "\n" + yStack);
         int a= Integer.parseInt(xStack.get(xStack.size()/2).toString())+1 ;
         int b = Integer.parseInt(yStack.get(yStack.size()/2).toString())+1;
-        System.out.println("Location-> " +a + " , "+ b);
 
+        
         String result = min_dist/2 + " "+ a + " " + b; 
         q.WriteResultInFile(outputFile,result); //write in file the result
         }
@@ -125,7 +109,8 @@ public class Game
         }
       
     }
-    public static boolean isSafe(CityMap map, boolean visitedMap[][], int x, int y) {
+
+    public static boolean isSafe(CityMap map, boolean visitedMap[][], int x, int y) { 
 
         return !(map.getMap()[x][y] == '#' || visitedMap[x][y] == true );
     }
@@ -137,7 +122,7 @@ public class Game
     public static int fiindMinDistance(CityMap map,boolean visitedMap[][], int ch1X, int ch1Y, int ch2X, int ch2Y, int min_dist,int dist, int distanceMatrix[][],Stack xStack, Stack yStack){
         
         distanceMatrix[ch1X][ch1Y] = dist;
-      
+        
         xStack.push(ch1X);
         yStack.push(ch1Y);
     
