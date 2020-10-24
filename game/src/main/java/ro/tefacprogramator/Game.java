@@ -45,7 +45,6 @@ public class Game
         
         if(min_dist != Integer.MAX_VALUE){
 
-            System.out.println(xStack + "\n" + yStack);
             //Se verifica daca exista o solutie sau mai multe
         int count = 0;
         for(int i =0; i< xStack.size();i++){
@@ -72,7 +71,7 @@ public class Game
         //Creeza 2 ArrayList in care stochez datele din stive.
         ArrayList v = new ArrayList(xStack);
         ArrayList w = new ArrayList(yStack);
-        System.out.println(xStack + "\n" + yStack);
+       
         //Goleste stivele.
         xStack.clear();
         yStack.clear();
@@ -95,14 +94,15 @@ public class Game
         //Adacuga coordonatele punctului de sosire.
         xStack.push(Integer.parseInt(v.get(0).toString()));
         yStack.push(Integer.parseInt(w.get(0).toString()));
-        System.out.println(xStack + "\n" + yStack);
+        
         int a= Integer.parseInt(xStack.get(xStack.size()/2).toString())+1 ;
         int b = Integer.parseInt(yStack.get(yStack.size()/2).toString())+1;
 
         
         String result = min_dist/2 + " "+ a + " " + b; 
         q.WriteResultInFile(outputFile,result); //write in file the result
-        }
+  
+    }
         else{
             String result = "Destination can't be reached.";
             q.WriteResultInFile(outputFile, result); //write in file the result
