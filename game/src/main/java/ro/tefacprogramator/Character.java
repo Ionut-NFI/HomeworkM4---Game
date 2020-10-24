@@ -28,5 +28,4 @@ public class Character {
     public void setMapPositionY(int mapPositionY) {
         this.mapPositionY = mapPositionY;
     }
-
 }

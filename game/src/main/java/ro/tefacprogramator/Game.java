@@ -7,19 +7,22 @@ public class Game
 {
     public static void main( String[] args )
     {
-        Play();
+        String inputFile = "maze.in";
+        String outputFile = "maze.out";
+        
+        Play(inputFile, outputFile);
     }
 
-    public static void Play(){
+    public static void Play(String inputFile, String outputFile){
         Character ch1 = new Character();
         Character ch2 = new Character();
         FileMethods q = new FileMethods();
         CityMap cityMap = new CityMap();
 
-        cityMap.setMapX(q.ReadRowFromFile());
-        cityMap.setMapY(q.ReadColumnFromFile());
+        cityMap.setMapX(q.ReadRowFromFile(inputFile));
+        cityMap.setMapY(q.ReadColumnFromFile(inputFile));
 
-        char[] matrix1D = q.ReadOtherLineFromFile().toCharArray();
+        char[] matrix1D = q.ReadOtherLineFromFile(inputFile).toCharArray();
 
         cityMap.setMap(q.makeMatrix2D(matrix1D, cityMap));
 
@@ -29,24 +32,24 @@ public class Game
         ch2.setMapPositionX(q.JPosition(matrix1D, cityMap)[0]);
         ch2.setMapPositionY(q.JPosition(matrix1D, cityMap)[1]);
        
-        Logic(ch1, ch2, q, cityMap);
+        Logic(inputFile, outputFile, ch1, ch2, q, cityMap);
     }
 
-    public static void Logic(Character ch1, Character ch2, FileMethods q, CityMap map) {
+    public static void Logic(String inputFile, String outputFile, Character ch1, Character ch2, FileMethods q, CityMap map) {
 
-        boolean[][] visitedMap = new boolean[q.ReadRowFromFile()][q.ReadColumnFromFile()];
+        boolean[][] visitedMap = new boolean[q.ReadRowFromFile(inputFile)][q.ReadColumnFromFile(inputFile)];
         Stack xStack = new Stack();
         Stack yStack = new Stack();
         
-        int[][] distanceMatrix = new int[q.ReadRowFromFile()][q.ReadColumnFromFile()];
+        int[][] distanceMatrix = new int[q.ReadRowFromFile(inputFile)][q.ReadColumnFromFile(inputFile)];
 
         int min_dist = fiindMinDistance(map, visitedMap, ch1.getMapPositionX(), ch1.getMapPositionY(), ch2.getMapPositionX(), ch2.getMapPositionY(), Integer.MAX_VALUE, 0, distanceMatrix, xStack, yStack);
         
         
-        if(min_dist != Integer.MAX_VALUE){
+        if(min_dist != Integer.MAX_VALUE){  
 
-            for (int i = 0; i < q.ReadRowFromFile(); i++) {
-                for (int j = 0; j < q.ReadColumnFromFile(); j++) {
+            for (int i = 0; i < q.ReadRowFromFile(inputFile); i++) {
+                for (int j = 0; j < q.ReadColumnFromFile(inputFile); j++) {
                     System.out.print(distanceMatrix[i][j] + " ");
                 }
                 System.out.println();
@@ -70,8 +73,8 @@ public class Game
         }
         System.out.println(xStack);
         System.out.println(yStack);
-        for (int i = 0; i < q.ReadRowFromFile(); i++) {
-            for (int j = 0; j < q.ReadColumnFromFile(); j++) {
+        for (int i = 0; i < q.ReadRowFromFile(inputFile); i++) {
+            for (int j = 0; j < q.ReadColumnFromFile(inputFile); j++) {
                 System.out.print(distanceMatrix[i][j] + " ");
             }
             System.out.println();
@@ -106,19 +109,19 @@ public class Game
             xStack.push(Integer.parseInt(v.get(0).toString()));
             yStack.push(Integer.parseInt(w.get(0).toString()));
             
-        System.out.println(xStack);
+        System.out.println(xStack); 
         System.out.println(yStack);
 
         int a= Integer.parseInt(xStack.get(xStack.size()/2).toString())+1 ;
         int b = Integer.parseInt(yStack.get(yStack.size()/2).toString())+1;
         System.out.println("Location-> " +a + " , "+ b);
 
-        String result = min_dist/2 + " "+ a + " " + b;
-        q.WriteResultInFile(result);
+        String result = min_dist/2 + " "+ a + " " + b; 
+        q.WriteResultInFile(outputFile,result); //write in file the result
         }
         else{
             String result = "Destination can't be reached.";
-            q.WriteResultInFile(result);
+            q.WriteResultInFile(outputFile, result); //write in file the result
         }
       
     }
@@ -128,32 +131,22 @@ public class Game
     }
 
     public static boolean isValid(int x, int y, CityMap map){
-        return (x < map.getMapX() && y <map.getMapY() && x >=0 && y>=0);
+        return (x < map.getMapX() && y <map.getMapY() && x >=0 && y>=0); 
     }
 
     public static int fiindMinDistance(CityMap map,boolean visitedMap[][], int ch1X, int ch1Y, int ch2X, int ch2Y, int min_dist,int dist, int distanceMatrix[][],Stack xStack, Stack yStack){
         
- 
         distanceMatrix[ch1X][ch1Y] = dist;
       
-        
         xStack.push(ch1X);
         yStack.push(ch1Y);
     
-        
-        
-        
-
         if( ch1X == ch2X && ch1Y == ch2Y){
             return Integer.min(dist, min_dist); //if source == destination 
         }
 
         visitedMap[ch1X][ch1Y] = true; //set visitedMap true for visited cell
        
-
-
-        
-
         //go to bottom cell
         if(isValid(ch1X+1,ch1Y,map) && isSafe(map, visitedMap, ch1X+1, ch1Y)){
             min_dist = fiindMinDistance(map, visitedMap, ch1X+1, ch1Y, ch2X, ch2Y, min_dist, dist+1, distanceMatrix, xStack, yStack);
@@ -171,9 +164,7 @@ public class Game
         if(isValid(ch1X,ch1Y-1,map) && isSafe(map, visitedMap,ch1X,ch1Y-1)){
             min_dist = fiindMinDistance(map, visitedMap, ch1X, ch1Y-1, ch2X, ch2Y, min_dist, dist+1, distanceMatrix, xStack, yStack);
         }
-        
-       //visitedMap[ch1X][ch1Y] = false;
-    
+
         return min_dist;
     }
 }

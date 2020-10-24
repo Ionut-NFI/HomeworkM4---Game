@@ -10,12 +10,12 @@ import java.util.Stack;
 
 public class FileMethods {
 
-  public String ReadFirstLineFromFile() {
+  public String ReadFirstLineFromFile(String inputFile) {
     
     String data = "";
   
     try {
-      File myObj = new File("maze.in");
+      File myObj = new File(inputFile);
       Scanner myReader = new Scanner(myObj);
       
       data = myReader.nextLine();
@@ -29,24 +29,24 @@ public class FileMethods {
     return data;
   }
 
-  public int ReadRowFromFile(){
-    String line = ReadFirstLineFromFile();
+  public int ReadRowFromFile(String inputFile){
+    String line = ReadFirstLineFromFile(inputFile);
 
     return Integer.parseInt ( line.substring(0, line.indexOf(" ")));
   }
 
-  public int ReadColumnFromFile(){
-    String line = ReadFirstLineFromFile();
+  public int ReadColumnFromFile(String inputFile){
+    String line = ReadFirstLineFromFile(inputFile);
     
     return Integer.parseInt ( line.substring(line.indexOf(" ")+1, line.length()));
   }
 
-  public String ReadOtherLineFromFile() {
+  public String ReadOtherLineFromFile(String inputFile) {
     
     String data = "";
   
     try {
-      File myObj = new File("maze.in");
+      File myObj = new File(inputFile);
       Scanner myReader = new Scanner(myObj);
       myReader.nextLine();
       while(myReader.hasNextLine()){
@@ -67,6 +67,7 @@ public class FileMethods {
   public char[][] makeMatrix2D(char[] matrix1D, CityMap cityMap) {
     char [][] tempMap = new char[cityMap.getMapX()][cityMap.getMapY()];
     int count = 0;
+
     for(int i = 0; i < cityMap.getMapX();i++){
     for(int j = 0; j< cityMap.getMapY();j++){
         tempMap[i][j] = matrix1D[count];
@@ -106,10 +107,9 @@ public class FileMethods {
   return position;
  }
  
-public void WriteResultInFile(String result){
+public void WriteResultInFile(String outputFile, String result){
   try {
-    FileWriter myObj = new FileWriter("maze.out");
-    
+    FileWriter myObj = new FileWriter(outputFile);
     
     myObj.write(result);
     
