@@ -28,29 +28,11 @@ public class Game
 
         ch2.setMapPositionX(q.JPosition(matrix1D, cityMap)[0]);
         ch2.setMapPositionY(q.JPosition(matrix1D, cityMap)[1]);
-
-        System.out.println("R position -> " + ch1.getMapPositionX() + " " + ch1.getMapPositionY());
-        System.out.println("J position -> " + ch2.getMapPositionX() + " " + ch2.getMapPositionY());
-        
-
-        
-
-
-        // print matrix 2D
-        System.out.println("Row number -> " + q.ReadRowFromFile());
-        System.out.println("Column number -> " + q.ReadColumnFromFile());
-        for (int i = 0; i < cityMap.getMapX(); i++) {
-            for (int j = 0; j < cityMap.getMapY(); j++) {
-                System.out.print(cityMap.getMap()[i][j]);
-            }
-            System.out.println();
-        }
+       
         Logic(ch1, ch2, q, cityMap);
     }
 
     public static void Logic(Character ch1, Character ch2, FileMethods q, CityMap map) {
-        System.out.println("Logic function");
-        System.out.println();
 
         boolean[][] visitedMap = new boolean[q.ReadRowFromFile()][q.ReadColumnFromFile()];
         Stack xStack = new Stack();
@@ -62,7 +44,6 @@ public class Game
         
         
         if(min_dist != Integer.MAX_VALUE){
-            System.out.println("The shortest distance is "+min_dist );
 
             for (int i = 0; i < q.ReadRowFromFile(); i++) {
                 for (int j = 0; j < q.ReadColumnFromFile(); j++) {
@@ -70,52 +51,74 @@ public class Game
                 }
                 System.out.println();
             }
-    
-            if(Integer.parseInt(xStack.get(xStack.size()-1).toString())>0)
-            {while( Integer.parseInt(xStack.get(xStack.size()-1).toString()) != ch2.getMapPositionX() && Integer.parseInt(xStack.get(xStack.size()-1).toString()) != ch2.getMapPositionX()){
-                xStack.pop();
-                yStack.pop();
-            }}
+            System.out.println("R-> " +ch1.getMapPositionX() + " " + ch1.getMapPositionY());
+            System.out.println("J-> " +ch2.getMapPositionX() + " " + ch2.getMapPositionY());
+
+        int count = 0;
+        for(int i =0; i< xStack.size();i++){
+            if((Integer.parseInt(xStack.get(i).toString()) == ch2.getMapPositionX()) && (Integer.parseInt(yStack.get(i).toString()) == ch2.getMapPositionY()))
+            count ++; 
+        }
+        if(count >=2){
+            for(int i =1; i< xStack.size()-1;i++){
+                if((Integer.parseInt(xStack.get(i).toString()) == ch2.getMapPositionX()) && (Integer.parseInt(yStack.get(i).toString()) == ch2.getMapPositionY())){
+                    xStack.setSize(i+1);
+                    yStack.setSize(i+1);
+                    distanceMatrix[Integer.parseInt(xStack.get(i).toString())][Integer.parseInt(yStack.get(i).toString())] =distanceMatrix[Integer.parseInt(xStack.get(i-1).toString())][Integer.parseInt(yStack.get(i-1).toString())] +1;
+                }
+            }
+        }
+        System.out.println(xStack);
+        System.out.println(yStack);
+        for (int i = 0; i < q.ReadRowFromFile(); i++) {
+            for (int j = 0; j < q.ReadColumnFromFile(); j++) {
+                System.out.print(distanceMatrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+        while(Integer.parseInt(xStack.get(xStack.size()-1).toString()) != ch2.getMapPositionX() || Integer.parseInt(yStack.get(yStack.size()-1).toString()) != ch2.getMapPositionY())
+        {
+        xStack.pop();
+        yStack.pop();
+        }
       
         ArrayList v = new ArrayList(xStack);
         ArrayList w = new ArrayList(yStack);
-    
+
         xStack.clear();
         yStack.clear();
-        
-            System.out.println("before      " +v);
-            System.out.println("before      " +w);
-    
-            xStack.push(Integer.parseInt(v.get(v.size()-1).toString()));
-            yStack.push(Integer.parseInt(w.get(w.size()-1).toString()));
-            for(int i = v.size()-2; i>0 ; i--){
-                int x = Integer.parseInt(v.get(i).toString());
-                int y = Integer.parseInt(w.get(i).toString());
-                int l = Integer.parseInt(xStack.lastElement().toString());
-                int k = Integer.parseInt(yStack.lastElement().toString());
-    
+           
+        xStack.push(Integer.parseInt(v.get(v.size()-1).toString()));
+        yStack.push(Integer.parseInt(w.get(w.size()-1).toString()));
+
+        for(int i = v.size()-1; i>0 ; i--){
+            int x = Integer.parseInt(v.get(i).toString());
+            int y = Integer.parseInt(w.get(i).toString());
+            int l = Integer.parseInt(xStack.lastElement().toString());
+            int k = Integer.parseInt(yStack.lastElement().toString());
+
             if( distanceMatrix[x][y] == distanceMatrix[l][k]-1 ){
-     
+        
                 xStack.push(Integer.parseInt(v.get(i).toString()));
                 yStack.push(Integer.parseInt(w.get(i).toString()));
             }
-            
-            
         }
             xStack.push(Integer.parseInt(v.get(0).toString()));
             yStack.push(Integer.parseInt(w.get(0).toString()));
             
-            
-               
-                System.out.println(xStack);
-    
-                System.out.println(yStack);
-                int a= Integer.parseInt(xStack.get(xStack.size()/2).toString())+1 ;
-                int b = Integer.parseInt(yStack.get(yStack.size()/2).toString())+1;
-                System.out.println("Location-> " +a + " , "+ b);
+        System.out.println(xStack);
+        System.out.println(yStack);
+
+        int a= Integer.parseInt(xStack.get(xStack.size()/2).toString())+1 ;
+        int b = Integer.parseInt(yStack.get(yStack.size()/2).toString())+1;
+        System.out.println("Location-> " +a + " , "+ b);
+
+        String result = min_dist/2 + " "+ a + " " + b;
+        q.WriteResultInFile(result);
         }
         else{
-            System.out.println("Destination can't be reached from source");
+            String result = "Destination can't be reached.";
+            q.WriteResultInFile(result);
         }
       
     }

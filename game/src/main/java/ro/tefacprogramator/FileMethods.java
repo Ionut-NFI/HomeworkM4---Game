@@ -1,7 +1,12 @@
 package ro.tefacprogramator;
-import java.io.File;  
-import java.io.FileNotFoundException;  
-import java.util.Scanner; 
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Stack; 
 
 public class FileMethods {
 
@@ -101,5 +106,20 @@ public class FileMethods {
   return position;
  }
  
+public void WriteResultInFile(String result){
+  try {
+    FileWriter myObj = new FileWriter("maze.out");
+    
+    
+    myObj.write(result);
+    
+    myObj.close();
+  } 
+  catch (IOException e) {
+    System.out.println("An error occurred.");
+    e.printStackTrace();
+  }
 
+  System.out.println("The result was written to the file");
+}
 }
